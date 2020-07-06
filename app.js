@@ -39,3 +39,7 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+
+const port = 7000;
+app.listen(port, () => console.log(`Reddit app listening on port ${port}!`))
