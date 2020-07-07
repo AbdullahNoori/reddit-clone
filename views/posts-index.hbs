@@ -17,6 +17,13 @@
          <a href="#" class="btn btn-info">Rsvp</a>
          <a href="/events/{{this.id}}/rsvps/new" class="btn btn-info">Rsvp</a>
        </div>
+      <li class="list-group-item">
+        <div class="lead">
+          <a href="/posts/{{this._id}}" class="lead">{{this.title}}</a>
+        </div>
+        <a href="{{this.url}}" target="_blank">{{this.url}}</a>
+        <div class="text-right">{{this.subreddit}}</div>
+      </li>
      </div>
    </div>
  {{/each}}
