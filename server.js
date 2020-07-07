@@ -11,3 +11,5 @@ app.use(expressValidator());require('./controllers/posts.js')(app);
 
 // Set db
 require('./data/reddit-db');
+
+module.exports = app;
