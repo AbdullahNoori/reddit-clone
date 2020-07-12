@@ -1,12 +1,12 @@
-nnconst express = require('express');
+const express = require('express');
 var path = require('path');
 var hbs = require('express-handlebars');
-var routes = require('./routes');
 
 var cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 
 const app = express();
+const router = require("./routes/index.js")
 
 require('dotenv').config();
 app.use(cookieParser()); // Add this after you initialize express.
@@ -38,7 +38,7 @@ app.use(checkAuth);
 
 // view engine Setup
 app.engine('hbs', hbs({extname: 'hbs',
-              defaultLayout: 'layout',
+              defaultLayout: 'main',
               layoutsDir: __dirname + '/views/layouts/',
               partialsDir: __dirname + '/views/partials/',
               }));
@@ -47,29 +47,15 @@ app.set('view engine', 'hbs')
 app.use(express.static(path.join(__dirname, "public")));
 
 
-require('./controllers/posts.js')(app);
+// require('./controllers/posts.js')(app);
 require('./data/reddit-db');
-require('./controllers/comments.js')(app);
-require('./controllers/auth.js')(app);
-require('./controllers/replies.js')(app);
 
-// app.use(app.router); // **this line will be removed**
-
-
-// Routes
-app.get('/', (req, res) => {
-  res.render("posts-index.hbs");
-})
-
-app.get('/post/new', (req, res) => {
-
-  res.render("post-new.hbs");
-})
+// require('./controllers/auth.js')(app);
+// require('./controllers/comments.js')(app);
+app.use(router)
 
 
+const port = 8000;
+app.listen(port, () => console.log(`Reddit app listening on port ${port}!`))
 
 module.exports = app;
-
-
-const port = 7000;
-app.listen(port, () => console.log(`Reddit app listening on port ${port}!`))

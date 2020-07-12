@@ -1,15 +1,17 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const express = require('express');
+const router = express.Router();
 
-module.exports = (app) => {
+const jwt = require('jsonwebtoken');
+const User = require('../models/users');
+
 // SIGN UP FORM
-  app.get("/sign-up", (req, res) => {
+router.get("/sign-up", (req, res) => {
     res.render("sign-up");
   });
 
 
   // SIGN UP POST
-  app.post("/sign-up", (req, res) => {
+  router.post("/sign-up", (req, res) => {
     // Create User and JWT
     const user = new User(req.body);
   
@@ -26,7 +28,7 @@ module.exports = (app) => {
   });
 
   // LOGOUT
- app.get('/logout', (req, res) => {
+  router.get('/logout', (req, res) => {
   //  console.log("_____________")
   //  console.log("User logged out")
   //  console.log("_____________")
@@ -35,12 +37,12 @@ module.exports = (app) => {
  });
 
  // LOGIN FORM
-  app.get('/login', (req, res) => {
+ router.get('/login', (req, res) => {
     res.render('login');
   });
 
   // LOGIN
-app.post("/login", (req, res) => {
+router.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   // Find this user name
@@ -74,5 +76,4 @@ app.post("/login", (req, res) => {
     });
 });
 
-}
-
+module.exports = router

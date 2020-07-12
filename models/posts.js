@@ -1,26 +1,24 @@
-
-const Post = require('../models/post');
-const Post = require('./post');const mongoose = require("mongoose");
-
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
+  createdAt: { type: Date },
+  updatedAt: { type: Date },
   title: { type: String, required: true },
   url: { type: String, required: true },
   summary: { type: String, required: true }
 });
 
+PostSchema.pre("save", function(next) {
+  // SET createdAt AND updatedAt
+  const now = new Date();
+  this.updatedAt = now;
+
+  if (!this.createdAt) {
+    this.createdAt = now;
+  }
+
+  next();
+});
+
 module.exports = mongoose.model("Post", PostSchema);
-
-
-  // CREATE
-  app.post('/posts/new', (req, res) => {
-    // INSTANTIATE INSTANCE OF POST MODEL
-    const post = new Post(req.body);
-
-    // SAVE INSTANCE OF POST MODEL TO DB
-    post.save((err, post) => {
-      // REDIRECT TO THE ROOT
-      return res.redirect(`/`);
-    })
-  });

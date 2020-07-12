@@ -1,12 +1,16 @@
-const Post = require('../models/post');
-const User = require("../models/user");
+const express = require('express');
+const router = express.Router();
 
-module.exports = (app) => {
+const Post = require('../models/posts');
+const User = require("../models/users");
 
-  app.get("/", (req, res) => {
+
+router.get("/", (req, res) => {
    var currentUser = req.user;
+   console.log("current user ",currentUser)
         Post.find().populate('author')
         .then(posts => {
+            console.log(posts)
             res.render('posts-index', { posts, currentUser });
         }).catch(err => {
             console.log(err.message);
@@ -14,7 +18,7 @@ module.exports = (app) => {
   });
 
   // SUBREDDIT
-  app.get("/n/:subreddit", function (req, res) {
+  router.get("/n/:subreddit", function (req, res) {
     var currentUser = req.user;
     Post.find({ subreddit: req.params.subreddit }).lean()
         .then(posts => {
@@ -25,8 +29,11 @@ module.exports = (app) => {
         });
   });
 
+  router.get("/post/new", (req, res) => {
+    res.render("posts-new");  
+  });
   // CREATE
-  app.post("/post/new", (req, res) => {
+  router.post("/posts/new", (req, res) => {
     if (req.user) {
         var post = new Post(req.body);
         post.author = req.user._id;
@@ -52,7 +59,7 @@ module.exports = (app) => {
     }
 });
   // SHOW single post 
-  app.get("/posts/:id", function (req, res) {
+  router.get("/posts/:id", function (req, res) {
     var currentUser = req.user;
     Post.findById(req.params.id).populate('comments').lean()
         .then(post => {
@@ -63,7 +70,7 @@ module.exports = (app) => {
         });
   });
 
-  app.put("/posts/:id/vote-up", function(req, res) {
+  router.put("/posts/:id/vote-up", function(req, res) {
     Post.findById(req.params.id).exec(function(err, post) {
       post.upVotes.push(req.user._id);
       post.voteScore += 1;
@@ -79,7 +86,7 @@ module.exports = (app) => {
     });
   });
   
-  app.put("/posts/:id/vote-down", function(req, res) {
+  router.put("/posts/:id/vote-down", function(req, res) {
     Post.findById(req.params.id).exec(function(err, post) {
         post.downVotes.push(req.user._id);
         post.voteScore -= 1;
@@ -94,71 +101,5 @@ module.exports = (app) => {
         res.status(200);
     });
   });
-  
 
-};
-const Post = require('../models/post');
-module.exports = function (app) {
-    // CREATE Comment
-    app.post("/post/:postId/comments", function (req, res) {
-        const comment = new Comment(req.body);
-        comment.author = req.user._id;
-        comment
-            .save()
-            .then(comment => {
-                return Promise.all([
-                    Post.findById(req.params.postId)
-                ]);
-            })
-            .then(([post, user]) => {
-                post.comments.unshift(comment);
-                return Promise.all([
-                    post.save()
-                ]);
-            })
-            .then(post => {
-                res.redirect(`/posts/${req.params.postId}`);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    });
-
-    app.put("/comment/:id/vote-up", function(req, res) {
-        Comment.findById(req.params.id).exec(function(err, comment) {
-            console.log('voting up _________________')
-            console.log('voting up _________________')
-            console.log('voting up _________________')
-            console.log('voting up _________________')
-            console.log('voting up _________________')
-            comment.upVotes.push(req.user._id);
-            comment.voteScore += 1;
-            if (comment.voteScore >= 0) {
-                comment.positive = true;
-            }
-            else {
-                comment.positive = false;
-            }
-            
-            comment.save();
-      
-            res.status(200);
-        });
-    });
-
-    app.put("/comments/:id/vote-down", function(req, res) {
-        Comment.findById(req.params.id).exec(function(err, comment) {
-            comment.downVotes.push(req.user._id);
-            comment.voteScore -= 1;
-            if (comment.voteScore >= 0) {
-                comment.positive = true;
-            }
-            else {
-                comment.positive = false;
-            }
-            comment.save();
-      
-            res.status(200);
-        });
-    });
-};
+module.exports = router

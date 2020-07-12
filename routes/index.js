@@ -1,17 +1,15 @@
+postsRoute = require("../controllers/posts.js")
+commentsRoute = require("../controllers/comments.js")
+repliesRoute = require("../controllers/replies.js")
+authRoute = require("../controllers/auth.js")
+
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('<a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a>', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-module.exports = router;
-
-/* GET  page. */
-router.get('<a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a>', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.use('/', postsRoute);
+// router.use('/', commentsRoute);
+// router.use('/', repliesRoute);
+router.use('/', authRoute);
 
 module.exports = router;
 
