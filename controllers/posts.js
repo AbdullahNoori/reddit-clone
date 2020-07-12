@@ -6,15 +6,13 @@ const User = require("../models/users");
 
 
 router.get("/", (req, res) => {
-   var currentUser = req.user;
-   console.log("current user ",currentUser)
-        Post.find().populate('author')
-        .then(posts => {
-            console.log(posts)
-            res.render('posts-index', { posts, currentUser });
-        }).catch(err => {
-            console.log(err.message);
-        })
+    Post.find({}).lean()
+    .then(posts => {
+      res.render("posts-index", { posts });
+    })
+    .catch(err => {
+      console.log(err.message);
+    });
   });
 
   // SUBREDDIT
@@ -36,10 +34,7 @@ router.get("/", (req, res) => {
   router.post("/posts/new", (req, res) => {
     if (req.user) {
         var post = new Post(req.body);
-        post.author = req.user._id;
-        post.upVotes = [];
-        post.downVotes = [];
-        post.voteScore = 0;
+        // post.author = req.user._id;
         post
             .save()
             .then(post => {

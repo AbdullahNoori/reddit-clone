@@ -1,18 +1,18 @@
 const express = require('express');
 var path = require('path');
 var hbs = require('express-handlebars');
-
 var cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-
 const app = express();
 const router = require("./routes/index.js")
+const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+
 
 require('dotenv').config();
 app.use(cookieParser()); // Add this after you initialize express.
 
-const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
+
 
 // Use Body Parser
 app.use(bodyParser.json());
@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Add after body parser initialization!
 app.use(expressValidator());
+
 
 var checkAuth = (req, res, next) => {
   console.log("Checking authentication");

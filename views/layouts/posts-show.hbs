@@ -1,59 +1,11 @@
-<div class="row m-3 mb-0">
-  <div class="float-left p-3">
-    <p class="float-right">
-      <div class="row">
-        <form class="vote-up" data-id="{{post._id}}">
-          <button class="btn btn-light" type="submit">
-            <img src="https://www.vippng.com/png/detail/7-77884_thumbs-up-thumbs-down-clip-art-at-clker.png" width='20px' alt="">
-            </button>
-        </form>
+<div class="row justify-content-center">
+  <div class="card mt-5 p-5">
+    <div class="card-title">
+      <a href="{{post.url}}" class="lead">{{post.title}}</a>
+      <div class="card-body">
+        <p>{{post.summary}}</p>
       </div>
-      <div class="row pl-3">
-        {{#if post.voteScore }}
-              {{post.voteScore}}
-          {{else}}
-              0
-          {{/if}}
-      </div>
-
-      <div class="row">
-        <form class="vote-down" data-id="{{this._id}}">
-          <button class="btn btn-light" type="submit">
-            <img src="https://www.pngitem.com/pimgs/m/117-1174863_thumbs-dwn-icon-red-th-clip-art-at.png" width='20px' alt="">
-          </button>
-        </form>
-      </div>
-    </p>
+    </div>
   </div>
-
-  <div class="col-sm-6 col-sm-offset-3 p-3">
-    <p class="text-muted">posted by {{post.author.username}}</p>
-    <a href="{{post.url}}" class="lead">{{post.title}}</a>
-    <p>{{post.summary}}</p>
-    
   </div>
-</div>
-
-{{!-- <div class="row justify-content-center p-5 m-3 mt-0"> --}}
-  <div class="column justify-content-center m-3 p-5 ">
-  <form class="form-inline  justify-content-center mb-5" action="/post/{{post._id}}/comments" method="post">
-    <div class="form-group w-50">
-      <input class='form-control w-100' name="content" placeholder="Comment"></input>
-    </div>
-    
-    <div class="form-group text-right">
-      <button type="submit" class="btn btn-default">Save</button>
-    </div>
-  </form>
-
- <form action="/posts/{{post._id}}/comments" method="post">
-    <textarea class='form-control' name="content" placeholder="Comment"></textarea>
-    <div class="text-right">
-      <button type="submit" class="btn btn-primary">Save</button>
-    </div>
-  </form>
-  
-  {{#each post.comments}}
-      {{> comment comment=this postId=../post._id}}
-  {{/each}}
 </div>
