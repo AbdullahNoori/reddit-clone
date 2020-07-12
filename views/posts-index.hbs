@@ -1,31 +1,62 @@
-<!-- events-index -->
-<div class="row mt-4">
-   <div class="col-lg-8 offset-lg-2">
-       <!-- Add the following two lines -->
-       <h1>Reviews</h1>
-       <a href="/events/new">New Event</a>
 
-       <h1>Events</h1>
-       {{#each events}}
-   <div class="card mt-3">
-     <img class="card-img-top" src="{{this.imgUrl}}" alt="Card image cap">
-     <div class="card-body">
-       <h5 class="card-title">{{this.title}}</h5>
-       <div class="lead"><a href="/posts/{{this._id}}">{{this.title}}</a></div>
-       <p class="card-text">{{this.desc}}</p>
-       <div class="text-right">
-         <a href="#" class="btn btn-info">Rsvp</a>
-         <a href="/events/{{this.id}}/rsvps/new" class="btn btn-info">Rsvp</a>
-       </div>
-      <li class="list-group-item">
-        <div class="lead">
-          <a href="/posts/{{this._id}}" class="lead">{{this.title}}</a>
-        </div>
-        <a href="{{this.url}}" target="_blank">{{this.url}}</a>
-        <div class="text-right">{{this.subreddit}}</div>
-      </li>
-     </div>
-   </div>
- {{/each}}
-     </div>
- </div>
+ <div class="row justify-content-center mt-5">
+  <div class="col-sm-8 col-sm-offset-2">
+    <ul>
+      {{#each posts}}
+        <li class="list-group-item">
+          <div class="lead">
+            <p class="float-right">
+              {{this.voteScore}}
+              {{#if this.positive }}
+                <img src="data:image/png;base64,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" width='20px' alt="">
+              {{else}}
+                <img src="https://cdn3.iconfinder.com/data/icons/musthave/256/Stock%20Index%20Down.png" width='20px' alt="">
+              {{/if}}
+              
+            </p>
+            <a class="text-dark" href="/posts/{{this._id}}">{{this.title}}</a>
+          </div>
+          <a class="text-dark" href="{{this.url}}" target="_blank">{{this.url}} </a>
+          <div><small>Author: {{this.author.username}}</small></div>
+
+          <div class="text-right">
+            <a class="text-dark" href="/n/{{this.subreddit}}">{{this.subreddit}}</a>
+          </div>
+          <div class="row">
+          <div class="col-xs-6 mr-2">
+            <form class="vote-up" data-id="{{this._id}}">
+              <button class="btn btn-light" type="submit">
+                <img src="https://www.vippng.com/png/detail/7-77884_thumbs-up-thumbs-down-clip-art-at-clker.png" width='20px' alt="">
+                </button>
+            </form>
+          </div>
+
+          <div class="col-xs-6 mt-2">
+              {{#if this.voteScore }}
+                  {{this.voteScore}}
+              {{else}}
+                  0
+              {{/if}}
+          </div>
+          
+          <div class="col-xs-6 ml-2">
+            <form class="vote-down" data-id="{{this._id}}">
+              <button class="btn btn-light" type="submit">
+                <img src="https://www.pngitem.com/pimgs/m/117-1174863_thumbs-dwn-icon-red-th-clip-art-at.png" width='20px' alt="">
+              </button>
+            </form>
+          </div>
+
+            <div class="col-xs-6 mt-2">
+
+              20 comments
+
+            </div>
+
+
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+</div>

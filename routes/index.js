@@ -7,3 +7,11 @@ router.get('<a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a>
 });
 
 module.exports = router;
+
+/* GET  page. */
+router.get('<a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a>', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
+module.exports = router;
+
